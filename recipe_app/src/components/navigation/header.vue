@@ -8,29 +8,35 @@
         <div class="flex items-center flex-1 justify-end">
             <ul class="flex items-center h-full">
                 <li class="h-full w-full flex items-center hover:bg-amber-200 hover:cursor-pointer hover:text-red-500 hover:font-semibold">
-                    <router-link :to="{ name: 'home' }" class="flex items-center w-full h-full px-4">
+                    <router-link :to="{ name: 'home' }" class="flex items-center w-full h-full px-4 tracking-wider">
                         HOME
                     </router-link>
                 </li>
                 <li class="h-full w-full flex items-center hover:bg-amber-200 hover:cursor-pointer hover:text-red-500 hover:font-semibold">
-                    <router-link :to="{ name: 'recipe' }" class="flex items-center w-full h-full px-4">
+                    <router-link :to="{ name: 'recipe' }" class="flex items-center w-full h-full px-4 tracking-wider">
                         RECIPES
                     </router-link>
                 </li>
                 <li class="h-full w-full flex items-center hover:bg-amber-200 hover:cursor-pointer hover:text-red-500 hover:font-semibold">
-                    <router-link :to="{ name: 'popular' }" class="flex items-center w-full h-full px-4">
+                    <router-link :to="{ name: 'popular' }" class="flex items-center w-full h-full px-4 tracking-wider">
                         POPULAR
                     </router-link>
                 </li>
-                <li class="h-full w-full flex items-center hover:bg-amber-200 hover:cursor-pointer hover:text-red-500 hover:font-semibold">
-                    <router-link :to="{ name: 'savedRecipes' }" class="flex items-center w-full h-full px-4">
+                <li class="h-full w-full flex items-center hover:bg-amber-200 hover:cursor-pointer hover:text-red-500 hover:font-semibold" v-show="userStore.authenticated">
+                    <router-link :to="{ name: 'savedRecipes' }" class="flex items-center w-full h-full px-4 tracking-wider">
                         SAVED
                     </router-link>
                 </li>
-                <li class="h-full w-full flex items-center hover:bg-amber-200 hover:cursor-pointer hover:text-red-500 hover:font-semibold">
-                    <router-link :to="{ name: 'signin' }" class="flex items-center justify-center w-24 h-full px-4 ">
+                <li class="h-full w-full flex items-center hover:bg-amber-200 hover:cursor-pointer hover:text-red-500 hover:font-semibold" v-if="!userStore.authenticated">
+                    <router-link :to="{ name: 'signin' }" class="flex items-center justify-center min-w-24 h-full px-4 tracking-wider">
                         SIGN IN
                     </router-link>
+                </li>
+                <li class="h-full w-full flex justify-center items-center hover:bg-amber-200 hover:cursor-pointer hover:text-red-500 hover:font-semibold tracking-wider px-2 min-w-28"
+                     v-if="userStore.authenticated"
+                     @click="userStore.signOut()"
+                >
+                        LOG OUT
                 </li>
                 <li class="ps-2 pe-5 h-full flex items-center relative">
                     <transition
@@ -57,6 +63,9 @@
 <script setup>
     import { ref } from 'vue';
 
+    import { useUserStore } from '@/stores/userStore';
+    const userStore=useUserStore();
+
     const searchInputVisible=ref(false);
     const ingredientOrRecipe=ref(true);
     const editVisible=ref(false);
@@ -72,3 +81,13 @@
         ingredientOrRecipe.value=!ingredientOrRecipe.value;
     }
 </script>
+
+<style scoped>
+    .router-link-active,
+    .router-link-exact-active {
+        color: red;
+        background-color: #f8cba8; 
+        font-weight: 500; 
+    }
+    
+</style>

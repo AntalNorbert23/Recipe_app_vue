@@ -31,6 +31,16 @@ export const useUserStore=defineStore('user',{
             this.authenticated=false;
             router.push({name:'home'});
         },
+        async autosignIn(uid){
+            try{
+                const userData=await this.getUserProfile(uid);
+
+                this.setUser(userData);
+                return true;
+            }catch(error){
+                throw new Error(error.message);
+            }
+        },
         // action to check if the user exists in the database, if so return the user data
         async getUserProfile(uid){
             try{

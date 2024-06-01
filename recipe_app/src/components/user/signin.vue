@@ -1,6 +1,7 @@
 <template>
     <div class="flex justify-center pt-10">
-        <Form  @submit="onSubmit" :validation-schema="formSchema" class="border-2 w-96 h-auto border-amber-500 flex  items-center flex-col">
+        <div class="loader" v-show="userStore.loading"></div>
+        <Form  @submit="onSubmit" :validation-schema="formSchema" class="border-2 w-96 h-auto border-amber-500 flex  items-center flex-col" v-show="!userStore.loading">
             <h1 
                 v-text="!regOrLog ? 'Sign in' : 'Register'"
                 class="text-3xl py-3"
@@ -97,3 +98,18 @@
         }
     }
 </script>
+
+<style scoped>
+    .loader {
+        width: 60px;
+        aspect-ratio: 1;
+        border-radius: 50%;
+        -webkit-mask:linear-gradient(0deg,#000 55%,#0000 0) bottom/100% 18.18%;
+        mask:linear-gradient(0deg,#000 55%,#0000 0) bottom/100% 18.18%;
+        background:linear-gradient(#f03355 0 0) bottom/100% 0% no-repeat #ddd;
+        animation: l8 2s infinite steps(7);
+    }
+    @keyframes l8 {
+        100% {background-size:100% 115%}
+    }
+</style>

@@ -15,6 +15,7 @@ const defaultUser={
 
 export const useUserStore=defineStore('user',{
     state:()=>({
+        loading:false,
         user:defaultUser,
         authenticated:false
     }),
@@ -58,6 +59,8 @@ export const useUserStore=defineStore('user',{
         //action to sign in the user
         async signIn(formValues){
             try{
+                this.loading=true;
+
                 //sign in user
                 const response = await signInWithEmailAndPassword(
                     AUTH, formValues.email, formValues.password
@@ -73,13 +76,14 @@ export const useUserStore=defineStore('user',{
                 router.push({name:'savedRecipes'});
 
             }catch(error){
-               // throw new Error(errorCodes(error.code))
+                throw new Error(errorCodes(error.code))
             }finally{
-                //loader set back
+                this.loading=false;
             }
         },
         async register(formValues){
             try{
+                this.loading=true;
                 const response= await createUserWithEmailAndPassword(
                     AUTH, formValues.email, formValues.password
                 );
@@ -95,7 +99,9 @@ export const useUserStore=defineStore('user',{
 
                 router.push({name:'home'})
             }catch(error){
-               // throw new Error(errorCodes(error.code))
+                throw new Error(errorCodes(error.code))
+            }finally{
+                this.loading=false;
             }
         }
     }

@@ -34,10 +34,13 @@
                 </li>
                 <li class="h-full w-full flex justify-center items-center hover:bg-amber-200 hover:cursor-pointer hover:text-red-500 hover:font-semibold tracking-wider px-2 min-w-28"
                      v-if="userStore.authenticated"
-                     @click="userStore.signOut()"
+                     @click="showLogoutModal"
                 >
                         LOG OUT
                 </li>
+
+                <logoutModal :isVisible="logoutModalVisible" @confirm="logOut" @cancel="cancelLogout" />
+                
                 <li class="ps-2 pe-5 h-full flex items-center relative">
                     <transition
                         enter-active-class="animate__animated animate__fadeInDown"
@@ -62,6 +65,7 @@
 
 <script setup>
     import { ref } from 'vue';
+    import logoutModal from '@/composables/logout-modal.vue';
 
     import { useUserStore } from '@/stores/userStore';
     const userStore=useUserStore();
@@ -69,6 +73,7 @@
     const searchInputVisible=ref(false);
     const ingredientOrRecipe=ref(true);
     const editVisible=ref(false);
+    const logoutModalVisible=ref(false);
 
     const showSearchInput=()=>{
         searchInputVisible.value=!searchInputVisible.value;
@@ -79,6 +84,19 @@
 
     const changeTypeOfSearch =()=>{
         ingredientOrRecipe.value=!ingredientOrRecipe.value;
+    }
+
+    const showLogoutModal=()=>{
+        logoutModalVisible.value=true;
+    }
+
+    const logOut=()=>{
+        logoutModalVisible.value=false;
+        userStore.signOut();
+    }
+
+    const cancelLogout=()=>{
+        logoutModalVisible.value=false;
     }
 </script>
 

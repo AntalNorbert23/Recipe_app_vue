@@ -50,6 +50,8 @@
                                class="focus:border-blue-400 border-[1px] border-black rounded ps-8 py-1"
                                :placeholder="ingredientOrRecipe ? 'Search for ingredient' : 'Search for recipe'"
                                v-if="searchInputVisible"
+                               v-model="searchQuery"
+                               @keyup.enter="performSearch"
                         >
                     </transition>
                     <i class="fa fa-search ps-2 hover:cursor-pointer hover:text-red-500" @click="showSearchInput"></i>
@@ -67,13 +69,20 @@
     import { ref } from 'vue';
     import logoutModal from '@/composables/logout-modal.vue';
 
+    import { useRouter } from 'vue-router';
+    const router=useRouter();
+
     import { useUserStore } from '@/stores/userStore';
     const userStore=useUserStore();
+
+    import { useRecipeStore } from '@/stores/recipeStore';
+    const recipeStore=useRecipeStore();
 
     const searchInputVisible=ref(false);
     const ingredientOrRecipe=ref(true);
     const editVisible=ref(false);
     const logoutModalVisible=ref(false);
+    const searchQuery=ref('');
 
     const showSearchInput=()=>{
         searchInputVisible.value=!searchInputVisible.value;
@@ -97,6 +106,12 @@
 
     const cancelLogout=()=>{
         logoutModalVisible.value=false;
+    }
+
+    const performSearch=()=>{
+        recipeStore.setSearchQuery(searchQuery.value,ingredientOrRecipe.value);
+        router.push({name:'searchedRecipes'});
+        searchQuery.value='';
     }
 </script>
 

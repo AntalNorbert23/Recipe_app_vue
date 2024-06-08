@@ -6,7 +6,7 @@ import Recipe from '@/components/recipe.vue';
 import Popular from '@/components/popular.vue';
 import SavedRecipes from '@/components/user/savedRecipes.vue';
 import SearchedRecipes from '@/components/searchedRecipes.vue';
-
+import DetailedRecipe from '@/components/detailedRecipe.vue';
 
 
 const router = createRouter({
@@ -17,6 +17,7 @@ const router = createRouter({
     {path: '/recipe',name: 'recipe',component: Recipe},
     {path: '/popular',name: 'popular',component: Popular},
     {path: '/searchedRecipes',name: 'searchedRecipes',component: SearchedRecipes},
+    {path: '/detailedRecipe/:id',name: 'detailedRecipe',component: DetailedRecipe},
     {path: '/user/savedRecipes',name: 'savedRecipes',component: SavedRecipes},
   ]
 })

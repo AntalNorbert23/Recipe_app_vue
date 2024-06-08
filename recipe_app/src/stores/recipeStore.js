@@ -6,6 +6,8 @@ export const useRecipeStore=defineStore('recipeStore',{
         searchQuery:'',
         recipes:[],
         searchByIngredient:false,
+        recipeDetail:[],
+        loading:false,
     }),
     actions:{
         async fetchRecipes(query,searchByIngredient){
@@ -26,7 +28,18 @@ export const useRecipeStore=defineStore('recipeStore',{
                 this.recipes=[];
             }
         },
-       
+        async fetchRecipeDetail(id) {
+            try {
+                this.loading=true;
+                const response = await axios.get(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`);
+                this.recipeDetail = await response.data.meals[0] || [];[]
+            } catch (error) {
+                console.error('Error fetching recipe detail', error);
+                this.recipeDetail = [];
+            }finally{
+                this.loading=false;
+            }
+          },
         setSearchQuery(query,searchByIngredient){
             this.searchQuery=query;
             this.fetchRecipes(query,searchByIngredient);

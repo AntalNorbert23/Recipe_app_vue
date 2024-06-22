@@ -7,6 +7,7 @@ export const useRecipeStore=defineStore('recipeStore',{
         recipes:[],
         searchByIngredient:false,
         recipeDetail:[],
+        categories: [],
         loading:false,
     }),
     actions:{
@@ -28,6 +29,15 @@ export const useRecipeStore=defineStore('recipeStore',{
                 this.recipes=[];
             }
         },
+        async fetchCategories() {
+            try {
+              const response = await axios.get('https://www.themealdb.com/api/json/v1/1/categories.php');
+              this.categories = response.data.categories || [];
+            } catch (error) {
+              console.error('Error fetching categories', error);
+              this.categories = [];
+            }
+        },
         async fetchRecipeDetail(id) {
             try {
                 this.loading=true;
@@ -39,7 +49,7 @@ export const useRecipeStore=defineStore('recipeStore',{
             }finally{
                 this.loading=false;
             }
-          },
+        },
         setSearchQuery(query,searchByIngredient){
             this.searchQuery=query;
             this.fetchRecipes(query,searchByIngredient);

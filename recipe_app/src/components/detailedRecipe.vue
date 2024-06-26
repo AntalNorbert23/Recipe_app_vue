@@ -1,16 +1,24 @@
 <template>
-    <div class="p-4">
-        <div v-if="recipeStore.loading" class=" flex justify-center items-center text-center loader "></div>
-        <div v-else class="recipe-detail max-w-2xl mx-auto">
-            <img :src="recipeDetail.strMealThumb" :alt="recipeDetail.strMeal" class="w-full h-auto rounded-lg" />
-            <h2 class="text-2xl font-bold mt-4" >{{ recipeDetail.strMeal }}</h2>
-            <h3 class="text-xl mt-2">Ingredients</h3>
-            <ul class="list-disc list-inside">
-                <li v-for="ingredient in ingredients" :key="ingredient">{{ ingredient }}</li>
-            </ul>
-            <h3 class="text-xl mt-4">Instructions</h3>
-            <p>{{ recipeDetail.strInstructions }}</p>
-        </div>
+    <div class="p-4 bg-gradient-to-r from-yellow-400 to-orange-500 min-h-screen">
+        <div v-if="recipeStore.loading" class="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 loader"></div>
+        <div v-else class="recipe-detail max-w-4xl mx-auto bg-white rounded-lg shadow-lg p-6">
+            <h2 class="text-4xl font-bold flex justify-center pb-6 text-gray-800">{{ recipeDetail.strMeal }}</h2>
+            <div class="flex mb-4">
+                <img :src="recipeDetail.strMealThumb" :alt="recipeDetail.strMeal" class="w-96 h-auto rounded-lg border-4 border-gray-300 shadow-md mr-32" />
+                <div class="ml-4 flex flex-col justify-center flex-1">
+                    <h3 class="text-xl font-semibold mt-2 text-gray-700">Ingredients</h3>
+                    <ul class="list-disc list-inside text-lg text-gray-600">
+                        <li v-for="ingredient in ingredients" :key="ingredient">{{ ingredient }}</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="instructions w-full mt-6">
+                <h3 class="text-xl font-semibold mb-2 text-gray-700">Instructions</h3>
+                <ol class="list-decimal list-inside text-lg text-gray-600">
+                    <li v-for="(step, index) in instructionSteps" :key="index">{{ step }}</li>
+                </ol>
+            </div>
+      </div>
     </div>
   </template>
 
@@ -39,6 +47,11 @@
         }
         return ingredientsList;
     })
+
+    const instructionSteps = computed(() => {
+        if (!recipeDetail.value || !recipeDetail.value.strInstructions) return [];
+        return recipeDetail.value.strInstructions.split('\n').filter(step => step.trim() !== '');
+    });
 
     onMounted(()=>{
         const mealID=route.params.id;

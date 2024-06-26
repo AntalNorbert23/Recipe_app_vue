@@ -4,7 +4,7 @@
            Sorry no recipes found.
         </div>
         <div v-else class="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-            <div v-for="recipe in recipes" :key="recipe.idMeal" class="recipe-card p-2 border rounded-lg shadow-lg hover:cursor-pointer">
+            <div v-for="recipe in recipes" :key="recipe.idMeal" class="recipe-card p-2 border rounded-lg shadow-lg hover:cursor-pointer" @click="viewRecipe(recipe.idMeal)">
                 <img :src="recipe.strMealThumb" :alt="recipe.strMeal" class="w-full h-60 object-cover rounded-lg" />
                 <p class="mt-2 text-center font-semibold">{{ recipe.strMeal }}</p>
             </div>
@@ -23,7 +23,10 @@
 
     const recipes = computed(() => recipeStore.recipes);
 
-    
+    const viewRecipe=(id)=>{
+        router.push({name:'detailedRecipe',params:{id}})
+    }
+
   </script>
   
   <style scoped>

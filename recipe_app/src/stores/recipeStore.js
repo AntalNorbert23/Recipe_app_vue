@@ -38,6 +38,18 @@ export const useRecipeStore=defineStore('recipeStore',{
               this.categories = [];
             }
         },
+        async fetchCategoriesRecipes(category){
+            try{
+                this.loading=true;
+                const response = await axios.get(`https://www.themealdb.com/api/json/v1/1/filter.php?c=${category}`)
+                this.recipes= await response.data.meals || [];
+            }catch(error){  
+                console.error('Error fetching category recipes', error);
+                this.recipes = [];
+            }finally{
+                this.loading=false;
+            }
+        }, 
         async fetchRecipeDetail(id) {
             try {
                 this.loading=true;

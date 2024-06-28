@@ -1,5 +1,5 @@
 <template>
-    <div v-if="isVisible" class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75">
+    <div v-if="isVisible" class="fixed inset-0 z-20 flex items-center justify-center bg-gray-800 bg-opacity-75">
       <div class="bg-white rounded-lg shadow-lg p-6 w-1/3">
         <h2 class="text-lg font-bold mb-4">Confirm Logout</h2>
         <p class="mb-4">Are you sure you want to log out?</p>
